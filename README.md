@@ -12,7 +12,7 @@ Turn any spare Linux VM into your own personal PaaS: automatic subdomains, nginx
 
 ## Install
 ```sh
-curl -fsSL https://raw.githubusercontent.com/openpaas/openpaas/main/install.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/diezo/openpaas/main/install.sh | sudo bash
 ```
 This installs nginx, certbot (with the nginx plugin) and Docker, then puts `op` at `/usr/local/bin/op`. Running it again upgrades OpenPaaS.
 

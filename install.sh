@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # OpenPaaS installer.
 #
-#   curl -fsSL https://raw.githubusercontent.com/openpaas/openpaas/main/install.sh | sudo bash
+#   curl -fsSL https://raw.githubusercontent.com/diezo/openpaas/main/install.sh | sudo bash
 #
 # Options (environment variables):
 #   OP_VERSION=v0.1.0   install a specific release instead of the latest
@@ -11,7 +11,7 @@
 # Safe to re-run: it upgrades op and skips anything already installed.
 set -euo pipefail
 
-OP_REPO="${OP_REPO:-openpaas/openpaas}"
+OP_REPO="${OP_REPO:-diezo/openpaas}"
 OP_VERSION="${OP_VERSION:-latest}"
 INSTALL_PATH="/usr/local/bin/op"
 

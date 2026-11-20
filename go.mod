@@ -1,4 +1,4 @@
-module github.com/openpaas/openpaas
+module github.com/diezo/openpaas
 
 go 1.22
 

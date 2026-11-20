@@ -17,9 +17,9 @@ builds:
     flags: [-trimpath]
     ldflags:
       - -s -w
-      - -X github.com/openpaas/openpaas/internal/cli.version={{.Version}}
-      - -X github.com/openpaas/openpaas/internal/cli.commit={{.ShortCommit}}
-      - -X github.com/openpaas/openpaas/internal/cli.date={{.Date}}
+      - -X github.com/diezo/openpaas/internal/cli.version={{.Version}}
+      - -X github.com/diezo/openpaas/internal/cli.commit={{.ShortCommit}}
+      - -X github.com/diezo/openpaas/internal/cli.date={{.Date}}
 
 archives:
   # No version in the file name, so install.sh can use releases/latest/download/.
