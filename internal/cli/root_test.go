@@ -24,8 +24,10 @@ func TestGate(t *testing.T) {
 	if err := run("help"); err != nil {
 		t.Errorf("help should run before setup: %v", err)
 	}
-	if err := run("status"); err != errSilent {
-		t.Errorf("status before setup: got %v, want gate refusal", err)
+	for _, args := range [][]string{{"status"}, {"list"}, {"create", "app"}, {"delete", "app"}} {
+		if err := run(args...); err != errSilent {
+			t.Errorf("%v before setup: got %v, want gate refusal", args, err)
+		}
 	}
 
 	if err := config.Save(&config.Config{Domain: "example.com", SetupComplete: false}); err != nil {

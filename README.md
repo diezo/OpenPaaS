@@ -2,7 +2,7 @@
 
 Turn any spare Linux VM into your own personal PaaS: automatic subdomains, nginx config, TLS and deployments, all from one domain you own.
 
-> Status: early (v0). Setup, the deploy API and TLS for the root and `deploy.` domains work today. App deployments are next.
+> Status: early (v0). Setup, the deploy API, and deploying Docker images to subdomains work today. Auto-redeploy on image push is next (see [docs/ROADMAP.md](docs/ROADMAP.md)).
 
 ## Requirements
 - A Debian or Ubuntu VM (amd64 or arm64) with a public IPv4 address
@@ -31,17 +31,41 @@ Once DNS checks out, setup configures nginx, starts the deploy API at `https://d
 
 To change any value later, run `sudo op setup` again. Pressing Enter keeps the current value.
 
+## Deploy a service
+```sh
+sudo op create blog
+```
+`op create` asks for a Docker image and the port your app listens on inside the container. Use the `:latest` tag so future auto-redeploys pick up new pushes. Images on `ghcr.io` are pulled with your GitHub token.
+
+It then:
+1. pulls the image;
+2. reserves a free host port (10000–19999, bound to `127.0.0.1` only);
+3. starts the container, which restarts on crash and on boot;
+4. routes `blog.example.com` to it through nginx;
+5. gets a TLS certificate.
+
+If any step before TLS fails, everything is rolled back.
+
+To skip the questions, pass the image and port as flags:
+```sh
+sudo op create blog --image ghcr.io/you/blog:latest --port 3000
+```
+
 ## Commands
-| Command          | Description                         |
-|------------------|-------------------------------------|
-| `op version`     | Print the version (no setup needed) |
-| `sudo op setup`  | Set up or reconfigure this VM       |
-| `sudo op status` | Domain, API health, cert expiry     |
+| Command                  | Description                                     |
+|--------------------------|-------------------------------------------------|
+| `op version`             | Print the version (no setup needed)             |
+| `sudo op setup`          | Set up or reconfigure this VM                   |
+| `sudo op status`         | Domain, API health, cert expiry                 |
+| `sudo op create <slug>`  | Deploy an image at `https://<slug>.<domain>`    |
+| `sudo op list`           | Services with URL, image, ports and live status |
+| `sudo op delete <slug>`  | Remove a service's container, route and cert    |
 
 ## Files
 | Path | Contents |
 |------|----------|
 | `/etc/openpaas/config.json` | Config, including the token (root-only, 0600) |
+| `/etc/openpaas/services.json` | Deployed services and their reserved ports |
 | `/var/log/openpaas/` | Install and setup logs |
 | `/etc/nginx/sites-available/openpaas-*.conf` | Managed nginx sites |
 | `/etc/systemd/system/openpaas-api.service` | Deploy API service |

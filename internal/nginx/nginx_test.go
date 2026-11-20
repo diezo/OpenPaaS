@@ -15,6 +15,15 @@ func TestRender(t *testing.T) {
 			t.Errorf("deploy conf missing %q", want)
 		}
 	}
+	out, err = RenderService("blog", "example.com", 10003)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"server_name blog.example.com;", "proxy_pass http://127.0.0.1:10003;"} {
+		if !strings.Contains(out, want) {
+			t.Errorf("service conf missing %q", want)
+		}
+	}
 	out, err = Render("root.conf.tmpl", "example.com", 7777)
 	if err != nil {
 		t.Fatal(err)

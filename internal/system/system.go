@@ -44,9 +44,18 @@ func IsRoot() bool { return os.Geteuid() == 0 }
 // Run executes a command, logging its output. On failure the error includes
 // the last lines of output so users can see what went wrong.
 func Run(name string, args ...string) (string, error) {
+	return RunInput("", name, args...)
+}
+
+// RunInput is Run with stdin (e.g. a secret for --password-stdin, which is
+// never logged).
+func RunInput(stdin, name string, args ...string) (string, error) {
 	Logf("$ %s %s", name, strings.Join(args, " "))
 	var buf bytes.Buffer
 	cmd := exec.Command(name, args...)
+	if stdin != "" {
+		cmd.Stdin = strings.NewReader(stdin)
+	}
 	cmd.Stdout = io.MultiWriter(&buf, logw)
 	cmd.Stderr = io.MultiWriter(&buf, logw)
 	cmd.Env = append(os.Environ(), "DEBIAN_FRONTEND=noninteractive")

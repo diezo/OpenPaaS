@@ -45,6 +45,47 @@ func Render(name, domain string, apiPort int) (string, error) {
 	return b.String(), err
 }
 
+// ServiceSite is the nginx site file name for a service.
+func ServiceSite(slug string) string { return "openpaas-svc-" + slug + ".conf" }
+
+// RenderService returns the nginx config for a service (exported for tests).
+func RenderService(slug, domain string, port int) (string, error) {
+	var b bytes.Buffer
+	err := tmpl.ExecuteTemplate(&b, "service.conf.tmpl", struct {
+		Slug, Domain string
+		Port         int
+	}{slug, domain, port})
+	return b.String(), err
+}
+
+// ConfigureService routes <slug>.<domain> to 127.0.0.1:<port>. If nginx
+// rejects the config, the site is removed again so nginx stays healthy.
+func ConfigureService(slug, domain string, port int) error {
+	conf, err := RenderService(slug, domain, port)
+	if err != nil {
+		return err
+	}
+	if err := enable(ServiceSite(slug), conf); err != nil {
+		return err
+	}
+	if err := TestAndReload(); err != nil {
+		disable(ServiceSite(slug))
+		return err
+	}
+	return nil
+}
+
+// RemoveService deletes a service's site and reloads nginx. Missing files are fine.
+func RemoveService(slug string) error {
+	disable(ServiceSite(slug))
+	return TestAndReload()
+}
+
+func disable(site string) {
+	os.Remove(filepath.Join(sitesEnabled, site))
+	os.Remove(filepath.Join(sitesAvailable, site))
+}
+
 // Configure writes the root + deploy sites, validates, and reloads nginx.
 func Configure(domain string, apiPort int) error {
 	if err := ensureHashBucket(); err != nil {

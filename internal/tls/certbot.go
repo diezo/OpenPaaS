@@ -38,6 +38,15 @@ func Issue(email string, names ...string) error {
 	return err
 }
 
+// Delete removes a certificate; a missing cert isn't an error.
+func Delete(certName string) error {
+	if _, err := os.Stat(filepath.Join(liveDir, certName)); errors.Is(err, os.ErrNotExist) {
+		return nil
+	}
+	_, err := system.Run("certbot", "delete", "--non-interactive", "--cert-name", certName)
+	return err
+}
+
 // Expiry returns when the cert named certName expires.
 func Expiry(certName string) (time.Time, error) {
 	b, err := os.ReadFile(filepath.Join(liveDir, certName, "cert.pem"))
