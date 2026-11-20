@@ -16,7 +16,9 @@ func newServeCmd() *cobra.Command {
 		Short:       "Run the deploy API server (used by systemd)",
 		Hidden:      true,
 		Args:        cobra.NoArgs,
-		Annotations: map[string]string{annNeedsRoot: "true"},
+		// Not gated on setup: `op setup` starts this service before it marks
+		// setup complete (TLS comes last), and only setup installs the unit.
+		Annotations: map[string]string{annNeedsRoot: "true", annSkipSetup: "true"},
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			return api.Serve(fmt.Sprintf("127.0.0.1:%d", port))
 		},

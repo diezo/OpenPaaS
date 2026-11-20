@@ -36,6 +36,17 @@ func TestGate(t *testing.T) {
 	}
 }
 
+// setup starts the API service before marking setup complete, so the gate
+// must never block `serve` on setup state.
+func TestServeNotGatedOnSetup(t *testing.T) {
+	t.Setenv("OPENPAAS_CONFIG_DIR", t.TempDir())
+	isRoot = func() bool { return true }
+	defer func() { isRoot = system.IsRoot }()
+	if err := gate(newServeCmd()); err != nil {
+		t.Errorf("serve before setup complete: got %v, want allowed", err)
+	}
+}
+
 func TestNeedsRoot(t *testing.T) {
 	t.Setenv("OPENPAAS_CONFIG_DIR", t.TempDir())
 	isRoot = func() bool { return false }

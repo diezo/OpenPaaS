@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"net"
 	"net/http"
-	"os"
 	"slices"
 	"strings"
 	"time"
@@ -221,9 +220,12 @@ func runSetup() error {
 func markIncomplete(cfg *config.Config, err error) error {
 	cfg.SetupComplete = false
 	_ = config.Save(cfg)
-	ui.Info("Details: %s", system.LogDir+"/setup.log")
+	fmt.Println()
+	fmt.Println(ui.Red(err.Error()))
+	fmt.Println()
+	ui.Info("Full log: %s", system.LogDir+"/setup.log")
 	ui.Info("Fix the issue above, then run %s again.", ui.Bold("sudo op setup"))
-	return err
+	return errSilent
 }
 
 // verifyDNS checks the apex, deploy and a random subdomain (to prove the
@@ -302,7 +304,8 @@ func waitHealthy(url string, timeout time.Duration) error {
 		}
 		time.Sleep(300 * time.Millisecond)
 	}
-	out, _ := system.Run("journalctl", "-u", service.Name, "-n", "20", "--no-pager")
-	fmt.Fprintln(os.Stderr, out)
-	return fmt.Errorf("deploy API didn't become healthy within %s", timeout)
+	// Return the logs in the error (printed after the spinner), not mid-spinner.
+	out, _ := system.Run("journalctl", "-u", service.Name, "-n", "10", "--no-pager", "-o", "cat")
+	return fmt.Errorf("deploy API didn't become healthy within %s. Recent logs:\n%s",
+		timeout, strings.TrimRight(out, "\n"))
 }
