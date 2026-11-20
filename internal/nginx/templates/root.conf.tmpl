@@ -1,0 +1,13 @@
+# Managed by OpenPaaS. Re-running `op setup` regenerates this file.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{.Domain}};
+
+    root {{.WebRoot}};
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
