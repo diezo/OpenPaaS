@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/openpaas/openpaas/internal/api"
+	"github.com/diezo/openpaas/internal/api"
 )
 
 // newServeCmd is run by systemd (openpaas-api.service); users don't call it.

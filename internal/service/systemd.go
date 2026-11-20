@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/openpaas/openpaas/internal/system"
+	"github.com/diezo/openpaas/internal/system"
 )
 
 const (

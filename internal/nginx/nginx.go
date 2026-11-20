@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"text/template"
 
-	"github.com/openpaas/openpaas/internal/system"
+	"github.com/diezo/openpaas/internal/system"
 )
 
 //go:embed templates/*.tmpl

@@ -14,15 +14,15 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/openpaas/openpaas/internal/api"
-	"github.com/openpaas/openpaas/internal/config"
-	"github.com/openpaas/openpaas/internal/github"
-	"github.com/openpaas/openpaas/internal/nginx"
-	"github.com/openpaas/openpaas/internal/prompt"
-	"github.com/openpaas/openpaas/internal/service"
-	"github.com/openpaas/openpaas/internal/system"
-	"github.com/openpaas/openpaas/internal/tls"
-	"github.com/openpaas/openpaas/internal/ui"
+	"github.com/diezo/openpaas/internal/api"
+	"github.com/diezo/openpaas/internal/config"
+	"github.com/diezo/openpaas/internal/github"
+	"github.com/diezo/openpaas/internal/nginx"
+	"github.com/diezo/openpaas/internal/prompt"
+	"github.com/diezo/openpaas/internal/service"
+	"github.com/diezo/openpaas/internal/system"
+	"github.com/diezo/openpaas/internal/tls"
+	"github.com/diezo/openpaas/internal/ui"
 )
 
 func newSetupCmd() *cobra.Command {

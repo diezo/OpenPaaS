@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/openpaas/openpaas/internal/cli"
+	"github.com/diezo/openpaas/internal/cli"
 )
 
 func main() {

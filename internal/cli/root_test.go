@@ -3,8 +3,8 @@ package cli
 import (
 	"testing"
 
-	"github.com/openpaas/openpaas/internal/config"
-	"github.com/openpaas/openpaas/internal/system"
+	"github.com/diezo/openpaas/internal/config"
+	"github.com/diezo/openpaas/internal/system"
 )
 
 func run(args ...string) error {

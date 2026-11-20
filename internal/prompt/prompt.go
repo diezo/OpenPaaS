@@ -10,7 +10,7 @@ import (
 
 	"golang.org/x/term"
 
-	"github.com/openpaas/openpaas/internal/ui"
+	"github.com/diezo/openpaas/internal/ui"
 )
 
 var reader = bufio.NewReader(os.Stdin)

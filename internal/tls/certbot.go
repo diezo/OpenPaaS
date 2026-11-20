@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/openpaas/openpaas/internal/system"
+	"github.com/diezo/openpaas/internal/system"
 )
 
 const liveDir = "/etc/letsencrypt/live"

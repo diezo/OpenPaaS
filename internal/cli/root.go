@@ -8,9 +8,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/openpaas/openpaas/internal/config"
-	"github.com/openpaas/openpaas/internal/system"
-	"github.com/openpaas/openpaas/internal/ui"
+	"github.com/diezo/openpaas/internal/config"
+	"github.com/diezo/openpaas/internal/system"
+	"github.com/diezo/openpaas/internal/ui"
 )
 
 // Build info, injected via -ldflags at release time.
