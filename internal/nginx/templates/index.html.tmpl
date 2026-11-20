@@ -5,16 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{.Domain}}</title>
 <style>
-  body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui,sans-serif;background:#0f1115;color:#e6e6e6}
-  main{text-align:center;padding:16px}
-  h1{font-size:1.6rem;margin:0 0 .5rem}
-  p{color:#9aa0a6;margin:0}
+  html,body{height:100%;margin:0}
+  body{display:grid;place-items:center;background:#fff;color:#000;
+       font:400 clamp(1rem,2.5vw,1.25rem)/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       -webkit-font-smoothing:antialiased;padding:0 16px;text-align:center}
+  a{color:inherit;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  a:hover{text-decoration-thickness:2px}
 </style>
 </head>
 <body>
-<main>
-  <h1>{{.Domain}}</h1>
-  <p>Powered by OpenPaaS</p>
-</main>
+  <p>Services managed by <a href="https://github.com/diezo/OpenPaaS" target="_blank" rel="noopener">OpenPaaS</a></p>
 </body>
 </html>
