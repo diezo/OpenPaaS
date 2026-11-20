@@ -141,6 +141,36 @@ func State(name string) string {
 	return strings.TrimSpace(out)
 }
 
+// Info is a container's live runtime state.
+type Info struct {
+	Status   string    // "running", "exited", "restarting", ... or "" if missing
+	Started  time.Time // when the current run started
+	Finished time.Time // when it last stopped
+	ExitCode int
+	Restarts int
+}
+
+// Inspect returns live state for a container (Status "" if it doesn't exist).
+func Inspect(name string) Info {
+	out, err := system.Run("docker", "inspect", "--format",
+		`{{json .State}}|{{.RestartCount}}`, name)
+	if err != nil {
+		return Info{}
+	}
+	stateJSON, restarts, _ := strings.Cut(strings.TrimSpace(out), "|")
+	var st struct {
+		Status     string
+		StartedAt  time.Time
+		FinishedAt time.Time
+		ExitCode   int
+	}
+	if json.Unmarshal([]byte(stateJSON), &st) != nil {
+		return Info{}
+	}
+	n, _ := strconv.Atoi(restarts)
+	return Info{Status: st.Status, Started: st.StartedAt, Finished: st.FinishedAt, ExitCode: st.ExitCode, Restarts: n}
+}
+
 // Exists reports whether a container with this name exists.
 func Exists(name string) bool { return State(name) != "" }
 
