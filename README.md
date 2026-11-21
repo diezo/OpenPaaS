@@ -12,20 +12,9 @@ One domain, one command per app, and every project gets its own HTTPS subdomain.
 
 </div>
 
-```console
-$ sudo op create blog --image ghcr.io/you/blog:latest --port 3000
-✓ Signing in to ghcr.io
-✓ Pulling ghcr.io/you/blog:latest
-✓ Starting container (port 10000 → 3000)
-✓ Routing blog.example.com through nginx
-✓ Getting TLS certificate for blog.example.com
-
-╭──────────────────────────────────────────╮
-│ ✓ blog is live                           │
-│                                          │
-│ URL     https://blog.example.com         │
-╰──────────────────────────────────────────╯
-```
+<p align="center">
+  <img src="docs/assets/hero.svg" alt="op create deploys multiple services on one VM, each on its own subdomain" width="100%">
+</p>
 
 You have a VM sitting idle and a handful of side projects with nowhere to live. OpenPaaS takes care of the nginx configs, certificates, port bookkeeping and "why is this container down?" so you can get back to building.
 
